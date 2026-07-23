@@ -74,7 +74,7 @@ const MISSIONS = [
     duration: "2 hores",
     coords: "41.846166, 2.671429",
     mapsUrl: "https://www.google.com/maps/?q=41.846166,2.671429",
-    clue: "Hora de desconnectar miau"
+    clue: "Hora de desconnectar"
   },
   {
     id: 4,
