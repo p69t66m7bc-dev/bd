@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Meta viewport per iPhone -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#070d1a" />
+
+  <!-- PWA meta tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Operació" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+
+  <title>Operació Especial</title>
+
+  <!-- Manifest per PWA -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Tipografia Google Fonts: Space Grotesk (display) + Inter (cos) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ================================================
+       PANTALLA 1 — INICI
+  ================================================ -->
+  <section id="screen-intro" class="screen active">
+    <div class="intro-content">
+      <div class="intro-badge">OPERACIÓ ACTIVA</div>
+      <h1 class="intro-title">Les missions d'avui s'han preparat correctament.</h1>
+      <p class="intro-sub">Completa totes les missions per desbloquejar la recompensa final.</p>
+      <button class="btn-primary" id="btn-start">INICIAR OPERACIÓ</button>
+    </div>
+    <!-- Decoració ambient -->
+    <div class="grid-overlay" aria-hidden="true"></div>
+  </section>
+
+  <!-- ================================================
+       PANTALLA 2 — MENÚ DE MISSIONS
+  ================================================ -->
+  <section id="screen-menu" class="screen">
+    <div class="menu-header">
+      <span class="menu-label">CENTRE DE COMANDAMENT</span>
+      <h2 class="menu-title">Missions</h2>
+    </div>
+    <div class="mission-list" id="mission-list">
+      <!-- Les targetes es generen dinàmicament amb JavaScript -->
+    </div>
+    <div class="menu-footer">
+      <span id="progress-text">0 / 4 completades</span>
+    </div>
+  </section>
+
+  <!-- ================================================
+       PANTALLA 3 — DETALL DE MISSIÓ (reutilitzable)
+  ================================================ -->
+  <section id="screen-mission" class="screen">
+    <button class="btn-back" id="btn-back">
+      <span class="back-arrow">&#8592;</span> TORNAR
+    </button>
+    <div class="mission-detail">
+      <span class="mission-index-label" id="detail-index">MISSIÓ 01</span>
+      <h2 class="mission-detail-title" id="detail-name"></h2>
+
+      <div class="detail-grid">
+        <div class="detail-row">
+          <span class="detail-key">HORA</span>
+          <span class="detail-value" id="detail-time"></span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">COORDENADES</span>
+          <a class="detail-value coords-link" id="detail-coords" href="#" target="_blank" rel="noopener"></a>
+        </div>
+        <div class="detail-row full-row">
+          <span class="detail-key">OBJECTIU</span>
+          <span class="detail-value" id="detail-clue"></span>
+        </div>
+      </div>
+
+      <button class="btn-secondary hidden" id="btn-checklist">QUÈ NECESSITO PER AVUI?</button>
+      <button class="btn-primary btn-complete" id="btn-complete">MISSIÓ COMPLETADA</button>
+      <p class="detail-note hidden" id="detail-note"></p>
+    </div>
+  </section>
+
+  <!-- ================================================
+       PANTALLA — QUÈ NECESSITO PER AVUI? (llista de preparació)
+  ================================================ -->
+  <section id="screen-checklist" class="screen">
+    <button class="btn-back" id="btn-back-checklist">
+      <span class="back-arrow">&#8592;</span> TORNAR
+    </button>
+    <div class="checklist-content">
+      <span class="mission-index-label">PREPARACIÓ</span>
+      <h2 class="mission-detail-title" id="checklist-title"></h2>
+      <div class="checklist-list" id="checklist-list">
+        <!-- Els ítems es generen dinàmicament amb JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================
+       PANTALLA 4 — MISSIÓ FINAL
+  ================================================ -->
+  <section id="screen-final-mission" class="screen">
+    <button class="btn-back" id="btn-back-final">
+      <span class="back-arrow">&#8592;</span> TORNAR
+    </button>
+    <div class="final-mission-content">
+      <span class="mission-index-label">MISSIÓ FINAL</span>
+      <h2 class="mission-detail-title" id="final-location"></h2>
+
+      <div class="detail-grid">
+        <div class="detail-row">
+          <span class="detail-key">HORA</span>
+          <span class="detail-value" id="final-time"></span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-key">COORDENADES</span>
+          <a class="detail-value coords-link" id="final-coords" href="#" target="_blank" rel="noopener"></a>
+        </div>
+        <div class="detail-row full-row">
+          <span class="detail-key">OBJECTIU</span>
+          <span class="detail-value" id="final-clue"></span>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="btn-final-complete">COMPLETAR MISSIÓ</button>
+    </div>
+  </section>
+
+  <!-- ================================================
+       PANTALLA — CONFIRMACIÓ DE MISSIÓ FINAL COMPLETADA
+  ================================================ -->
+  <section id="screen-final-confirm" class="screen">
+    <div class="final-confirm-content">
+      <div class="final-confirm-badge">OPERACIÓ FINALITZADA</div>
+      <h2 class="final-confirm-title">Missió Completada</h2>
+      <p class="final-confirm-sub">Has superat totes les proves de l'operació.</p>
+      <button class="btn-primary" id="btn-final-confirm-continue">CONTINUAR</button>
+    </div>
+  </section>
+
+  <!-- ================================================
+       PANTALLA 5 — FINAL
+  ================================================ -->
+  <section id="screen-end" class="screen">
+    <div class="end-content">
+      <div class="end-line"></div>
+      <!-- Els textos es generen dinàmicament des de l'array
+           END_SCREEN_TEXTS a app.js. Edita'ls allà. -->
+      <div id="end-texts"></div>
+      <div class="end-line"></div>
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+  <script>
+    // Registra el service worker perquè la PWA funcioni offline
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .catch((err) => console.warn('No s\'ha pogut registrar el service worker:', err));
+      });
+    }
+  </script>
+</body>
+</html>

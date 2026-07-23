@@ -1,0 +1,678 @@
+/* ================================================
+   VARIABLES I RESET
+================================================ */
+:root {
+  /* Paleta principal */
+  --color-bg:          #070d1a;        /* Fons profund */
+  --color-surface:     #0d1629;        /* Targetes i panells */
+  --color-surface-2:   #111e38;        /* Hover i elements elevats */
+  --color-border:      rgba(59, 130, 246, 0.15);
+  --color-border-glow: rgba(59, 130, 246, 0.4);
+
+  /* Blau principal */
+  --color-blue:        #5dbff7;
+  --color-blue-dim:    #35ade0;
+  --color-blue-ghost:  rgba(59, 130, 246, 0.08);
+
+  /* Text */
+  --color-text-primary:   #e8eef8;
+  --color-text-secondary: #6b8ab0;
+  --color-text-muted:     #334d6e;
+  --color-accent:         #60a5fa;
+
+  /* Tipografia */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body:    'Inter', sans-serif;
+
+  /* Espaiat segur per iPhone (Safe Area) */
+  --safe-top:    env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 20px);
+
+  /* Transicions */
+  --transition-fast:   0.2s ease;
+  --transition-medium: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:   0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  min-height: 100dvh;
+  overflow: hidden;   /* cada pantalla fa scroll per dins */
+  position: relative;
+}
+
+/* ================================================
+   SISTEMA DE PANTALLES
+================================================ */
+.screen {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: calc(var(--safe-top) + 24px) 24px calc(var(--safe-bottom) + 24px);
+
+  /* Oculta per defecte */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: opacity var(--transition-medium), transform var(--transition-medium);
+  will-change: opacity, transform;
+}
+
+.screen.active {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+  z-index: 10;
+}
+
+/* ================================================
+   PANTALLA 1 — INICI
+================================================ */
+#screen-intro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+}
+
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--color-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+.intro-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 340px;
+  margin: 0 auto;
+}
+
+.intro-badge {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--color-blue);
+  border: 1px solid var(--color-border-glow);
+  padding: 6px 14px;
+  border-radius: 2px;
+  margin-bottom: 40px;
+  background: var(--color-blue-ghost);
+}
+
+.intro-title {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+.intro-sub {
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 56px;
+}
+
+/* ================================================
+   BOTONS
+================================================ */
+.btn-primary {
+  display: block;
+  width: 100%;
+  padding: 18px 24px;
+  background: transparent;
+  border: 1px solid var(--color-blue);
+  color: var(--color-blue);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  cursor: pointer;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  transition: background var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-blue);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-medium);
+}
+
+.btn-primary:active::before,
+.btn-primary:hover::before {
+  transform: scaleX(1);
+}
+
+.btn-primary:active,
+.btn-primary:hover {
+  color: #070d1a;
+  box-shadow: 0 0 24px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary span,
+.btn-primary {
+  position: relative;
+  z-index: 1;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0 32px;
+  transition: color var(--transition-fast);
+}
+
+/* Botó secundari — més discret que el primari, per accions opcionals */
+.btn-secondary {
+  display: block;
+  width: 100%;
+  padding: 16px 24px;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  border-radius: 2px;
+  margin-bottom: 16px;
+  transition: border-color var(--transition-fast), color var(--transition-fast), background var(--transition-fast);
+}
+
+.btn-secondary:active,
+.btn-secondary:hover {
+  border-color: var(--color-border-glow);
+  color: var(--color-blue);
+  background: var(--color-blue-ghost);
+}
+
+.btn-back:active,
+.btn-back:hover {
+  color: var(--color-accent);
+}
+
+.back-arrow {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* ================================================
+   PANTALLA 2 — MENÚ
+================================================ */
+.menu-header {
+  margin-bottom: 36px;
+}
+
+.menu-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--color-blue);
+  margin-bottom: 10px;
+}
+
+.menu-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-text-primary);
+}
+
+.mission-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Targeta de missió */
+.mission-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 20px 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: border-color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.mission-card:active,
+.mission-card:hover {
+  border-color: var(--color-border-glow);
+  background: var(--color-surface-2);
+  transform: translateX(2px);
+}
+
+/* Targeta bloquejada */
+.mission-card.locked {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Targeta completada */
+.mission-card.completed {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.mission-card.completed::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--color-blue);
+}
+
+.card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-number {
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--color-text-muted);
+}
+
+.card-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+}
+
+.card-status {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--color-text-secondary);
+}
+
+.card-status.done {
+  color: var(--color-blue);
+}
+
+.card-arrow {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.mission-card:hover .card-arrow {
+  transform: translateX(3px);
+  color: var(--color-accent);
+}
+
+.menu-footer {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+}
+
+/* ================================================
+   PANTALLA 3 — DETALL MISSIÓ
+================================================ */
+.mission-detail {
+  padding-bottom: 40px;
+}
+
+.mission-index-label {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--color-blue);
+  margin-bottom: 12px;
+}
+
+.mission-detail-title {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--color-text-primary);
+  line-height: 1.15;
+  margin-bottom: 36px;
+}
+
+.detail-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--color-border);
+  align-items: start;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-row.full-row {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.detail-key {
+  font-family: var(--font-display);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--color-text-muted);
+  padding-top: 2px;
+}
+
+.detail-value {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  line-height: 1.5;
+}
+
+.coords-link {
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(96, 165, 250, 0.3);
+  padding-bottom: 1px;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+}
+
+.coords-link:active,
+.coords-link:hover {
+  color: #93c5fd;
+  border-color: #93c5fd;
+}
+
+.detail-message {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.btn-complete {
+  margin-top: 8px;
+}
+
+.detail-note {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 0.85rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.02em;
+}
+
+/* ================================================
+   PANTALLA 4 — MISSIÓ FINAL
+================================================ */
+.final-mission-content {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.final-intro-msg {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  margin-bottom: 40px;
+  margin-top: 20px;
+}
+
+/* ================================================
+   PANTALLA — CONFIRMACIÓ DE MISSIÓ FINAL COMPLETADA
+================================================ */
+#screen-final-confirm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+}
+
+.final-confirm-content {
+  text-align: center;
+  max-width: 340px;
+  margin: 0 auto;
+  animation: revealFade 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.final-confirm-badge {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--color-blue);
+  border: 1px solid var(--color-border-glow);
+  padding: 6px 14px;
+  border-radius: 2px;
+  margin-bottom: 32px;
+  background: var(--color-blue-ghost);
+}
+
+.final-confirm-title {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-text-primary);
+  margin-bottom: 16px;
+}
+
+.final-confirm-sub {
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 48px;
+}
+
+@keyframes revealFade {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================================
+   PANTALLA 5 — FINAL
+================================================ */
+#screen-end {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+}
+
+.end-content {
+  text-align: center;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.end-line {
+  width: 40px;
+  height: 1px;
+  background: var(--color-border-glow);
+  margin: 32px auto;
+}
+
+.end-text {
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+
+.end-text--accent {
+  color: var(--color-accent);
+  font-weight: 400;
+}
+
+/* ================================================
+   PANTALLA — QUÈ NECESSITO PER AVUI?
+================================================ */
+.checklist-content {
+  padding-bottom: 40px;
+}
+
+.checklist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.checklist-item:active,
+.checklist-item:hover {
+  border-color: var(--color-border-glow);
+  background: var(--color-surface-2);
+}
+
+.checklist-box {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--color-blue);
+  border-radius: 2px;
+  position: relative;
+  transition: background var(--transition-fast);
+}
+
+.checklist-item.checked .checklist-box {
+  background: var(--color-blue);
+}
+
+.checklist-item.checked .checklist-box::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--color-bg);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checklist-label {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  transition: color var(--transition-fast), opacity var(--transition-fast);
+}
+
+.checklist-item.checked .checklist-label {
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
+/* ================================================
+   UTILITATS
+================================================ */
+.hidden {
+  display: none !important;
+}
+
+/* Animació d'entrada de pantalla */
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Reduced motion: respectem la preferència del sistema */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
